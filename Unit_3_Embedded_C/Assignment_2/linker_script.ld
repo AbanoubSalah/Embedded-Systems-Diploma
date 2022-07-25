@@ -4,7 +4,7 @@ ENTRY(reset)
 /* list of memory sections */
 MEMORY
 {
-	Mem (rwx) : ORIGIN = 0x00000000, LENGTH = 64M
+	Mem (RWX) : ORIGIN = 0x00000000, LENGTH = 64M
 }
 
 /* list of output sections */

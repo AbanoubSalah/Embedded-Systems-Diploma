@@ -19,7 +19,7 @@ typedef union
 	{
 		vuint32_t     reversed:13;
 		vuint32_t     pin_13:1;
-	}Spin;
+	}Pin;
 }R_ODR_t;
 
 volatile R_ODR_t*  R_ODR =  ( volatile R_ODR_t* )( GPIOA_BASE + 0x0C );
@@ -32,10 +32,10 @@ int main(void)
 
 	while(1)
 	{
-		R_ODR->Spin.pin_13 = TRUE;
+		R_ODR->Pin.pin_13 = TRUE;
 		for(vint32_t i = 0; i < 100000; ++i);
 
-		R_ODR->Spin.pin_13 = FALSE;
+		R_ODR->Pin.pin_13 = FALSE;
 		for(vint32_t i = 0; i < 100000; ++i);
 	}
 }

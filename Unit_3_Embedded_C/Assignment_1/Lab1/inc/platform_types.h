@@ -1,10 +1,8 @@
 #ifndef _PLATFORM_TYPES_H
 #define _PLATFORM_TYPES_H
 
-
 #include <stdbool.h>
 #include <stdint.h>
-
 
 #ifndef FALSE
 #define FALSE	(boolean)false
