@@ -26,7 +26,7 @@ volatile R_ODR_t*  R_ODR =  ( volatile R_ODR_t* )( GPIOA_BASE + 0x0C );
 uint8 g_variables[3] = {1, 2, 3};
 uint8 const const_variables[3] = {1, 2, 3};
 
-uint32 main(void)
+sint32 main(void)
 {
 	RCC_APB2ENR |=  (RCC_MASK);
 	GPIOA_CRH   &= ~(CRH_RST_MASK);
@@ -40,4 +40,6 @@ uint32 main(void)
 		R_ODR->Pin.pin_13 = FALSE;
 		for(vint32_t i = 0; i < 100000; ++i);
 	}
+	
+	return 0;
 }

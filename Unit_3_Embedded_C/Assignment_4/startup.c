@@ -1,14 +1,7 @@
 #include "platform_types.h"
 
-extern uint32 _stack_top;
-extern uint32 _S_DATA;
-extern uint32 _E_DATA;
-extern uint32 _S_bss;
-extern uint32 _E_bss;
-extern uint32 _E_text;
-
-extern sint32 main(void);
 void Rest_Handler(void);
+extern sint32 main(void);
 
 void Default_Handler()
 {
@@ -17,19 +10,23 @@ void Default_Handler()
 
 void NMI_Handler(void) __attribute__ ((weak, alias ("Default_Handler")));
 void H_fault_Handler(void) __attribute__ ((weak, alias ("Default_Handler")));
-void MM_Fault_Handler(void) __attribute__ ((weak, alias ("Default_Handler")));
-void Bus_Fault(void) __attribute__ ((weak, alias ("Default_Handler")));
-void Usage_Fault_Handler(void) __attribute__ ((weak, alias ("Default_Handler")));
 
-uint32 vectors[] __attribute__((section(".vectors"))) = {
-(uint32) &_stack_top,
-(uint32) &Rest_Handler,
-(uint32) &NMI_Handler,
-(uint32) &H_fault_Handler,
-(uint32) &MM_Fault_Handler,
-(uint32) &Bus_Fault,
-(uint32) &Usage_Fault_Handler,
+// reserve stack size
+static uint32 Stack_top[256]; //256*4 *1024 B
+
+void (* const g_p_fn_Vectors[])() __attribute__((section(".vectors"))) = 
+{
+	(void (*)())((uint32)Stack_top + sizeof(Stack_top)),
+	&Rest_Handler,
+	&NMI_Handler,
+	&H_fault_Handler,
 };
+
+extern uint32 _S_DATA;
+extern uint32 _E_DATA;
+extern uint32 _S_bss;
+extern uint32 _E_bss;
+extern uint32 _E_text;
 
 void Rest_Handler (void)
 {

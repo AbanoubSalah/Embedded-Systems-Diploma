@@ -2,8 +2,8 @@
 
 MEMORY
 {
-	flash (RX) : ORIGIN = 0x00000000, LENGTH = 128K
-	sram (RWX) : ORIGIN = 0x20000000, LENGTH = 20K
+	flash (RX) : ORIGIN = 0x00000000, LENGTH = 512M
+	sram (RWX) : ORIGIN = 0x20000000, LENGTH = 512M
 }
 
 /* list of output sections */
@@ -20,6 +20,7 @@ SECTIONS
 	{
 		_S_DATA = . ;
 		*(.data)
+		. = ALIGN(4) ;
 		_E_DATA = . ;
 	}> sram AT> flash
 
@@ -27,9 +28,7 @@ SECTIONS
 	{
 		_S_bss = . ;
 		*(.bss*)
-		. = ALIGN(4);
 		_E_bss = . ;
-		. = ALIGN(4);
 		. = . + 0x1000 ;
 	} > sram
 }
