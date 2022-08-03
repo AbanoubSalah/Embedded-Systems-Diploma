@@ -1,4 +1,4 @@
-# Lesson 1
+# Lesson 1 Data Structure
 
 &emsp;- Circular FIFO: Circular first in first out data structure implemented using a static array of defined nodes<br />
 &emsp;- LIFO: Last in first out data structure implemented using a static array of defined nodes<br />
