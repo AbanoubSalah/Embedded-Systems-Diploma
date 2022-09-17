@@ -28,7 +28,7 @@ extern uint32 _S_bss;
 extern uint32 _E_bss;
 extern uint32 _E_text;
 
-void Rest_Handler (void)
+void Rest_Handler(void)
 {
 	//copy data from ROM to RAM
 	uint32 DATA_size = (uint8 *)&_E_DATA - (uint8 *)&_S_DATA;
