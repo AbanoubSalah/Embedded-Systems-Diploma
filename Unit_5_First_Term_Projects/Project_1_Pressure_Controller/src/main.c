@@ -38,8 +38,6 @@ int main()
 		AlarmMonitor_state();
 		PressureSensor_state();
 		AlarmActuator_state();
-		//TOGGLE_BIT(GPIOA_ODR, 12);
-		//Delay(0xFFF);
 	}
 
 }

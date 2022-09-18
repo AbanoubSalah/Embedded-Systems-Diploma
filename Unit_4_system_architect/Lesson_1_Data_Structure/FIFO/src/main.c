@@ -16,7 +16,7 @@
 
 int main()
 {
-	ELEMENTS_TYPE StaticBuffer [FIFO_BUFFER_LENGTH];
+	ELEMENTS_TYPE StaticBuffer[FIFO_BUFFER_LENGTH];
 	ELEMENTS_TYPE tmpELEMENT;
 	FIFO_Buffer_t buffFIFO;
 	uint32 idx;
