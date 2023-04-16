@@ -30,6 +30,8 @@ void MCAL_EXTI_Void_DeInit(void)
 	EXTI->FTSR = 0x00000000;
 	EXTI->SWIER = 0x00000000;
 	EXTI->PR = 0xFFFFFFFF;
+	
+	return ;
 }
 
 void MCAL_EXTI_Void_Update(EXTI_PinConfig_t *EXTIConfig)

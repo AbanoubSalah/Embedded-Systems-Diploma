@@ -17,12 +17,12 @@
  * Fn                -MCAL_GPIO_Init
  *
  * Brief             -Initializes the GPIOx PINy according to the specified
- *                    parameters in the PinConfig
+ *                    parameters in the pinConfig
  *
  * Param [in]        -GPIOx: where x can be (A..E depending on device used) to
  *                    select the GPIO Peripheral
  *
- * Param [in]        -PinConfig: is a pointer to GPIO_PinConfig_t structure that
+ * Param [in]        -pinConfig: is a pointer to GPIO_pinConfig_t structure that
  *                    contains the configuration information for the specified
  *                    GPIO PIN.
  *
@@ -32,11 +32,11 @@
  *                    package has only GPIO A,B and part of C AND D exported as
  *                    external PINs from the MCU
  ******************************************************************************/
-void MCAL_GPIO_Init (GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *PinConfig)
+void MCAL_GPIO_Init (GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *pinConfig)
 {
 	vuint32 *cfgReg = NULL;
 	vint32 pinBitPos = -1;
-	vuint32 tmpNum = PinConfig->GPIO_PinNumber;
+	vuint32 tmpNum = pinConfig->GPIO_PinNumber;
 
 	/* Get pin position */
 	for(; tmpNum != 0; tmpNum >>= 1)
@@ -63,15 +63,15 @@ void MCAL_GPIO_Init (GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *PinConfig)
 	/* Zero out the corresponding configuration bits */
 	*cfgReg &= ~(0b1111 << ((pinBitPos % 8) << 2));
 
-	if((PinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_PP) || (PinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_OD) || (PinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_AF_PP) || (PinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_AF_OD))
+	if((pinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_PP) || (pinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_OD) || (pinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_AF_PP) || (pinConfig->GPIO_Mode == GPIO_MODE_OUTPUT_AF_OD))
 	{
 		/* Output mode configuration */
-		*cfgReg |= ((((PinConfig->GPIO_Mode - 4) << 2) | PinConfig->GPIO_OutputSpeed) << ((pinBitPos % 8) << 2));
+		*cfgReg |= ((((pinConfig->GPIO_Mode - 4) << 2) | pinConfig->GPIO_OutputSpeed) << ((pinBitPos % 8) << 2));
 	}
-	else if((PinConfig->GPIO_Mode == GPIO_MODE_ANALOG) || (PinConfig->GPIO_Mode == GPIO_MODE_INPUT_FLO) || (PinConfig->GPIO_Mode == GPIO_MODE_INPUT_PU) || (PinConfig->GPIO_Mode == GPIO_MODE_INPUT_PD) || (PinConfig->GPIO_Mode == GPIO_MODE_AF_INPUT))
+	else if((pinConfig->GPIO_Mode == GPIO_MODE_ANALOG) || (pinConfig->GPIO_Mode == GPIO_MODE_INPUT_FLO) || (pinConfig->GPIO_Mode == GPIO_MODE_INPUT_PU) || (pinConfig->GPIO_Mode == GPIO_MODE_INPUT_PD) || (pinConfig->GPIO_Mode == GPIO_MODE_AF_INPUT))
 	{
 		/* Input mode configuration */
-		if(PinConfig->GPIO_Mode == GPIO_MODE_INPUT_PD)
+		if(pinConfig->GPIO_Mode == GPIO_MODE_INPUT_PD)
 		{
 			/* Taking care of pull-down special case since 0b11 is reserved */
 			*cfgReg |= (0b10 << (((pinBitPos % 8) << 2) + 2));
@@ -80,18 +80,18 @@ void MCAL_GPIO_Init (GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *PinConfig)
 		{
 			/* GPIO_MODE corresponds to configuration mode */
 			/* with the exception above */
-			*cfgReg |= (PinConfig->GPIO_Mode << (((pinBitPos % 8) << 2) + 2));
+			*cfgReg |= (pinConfig->GPIO_Mode << (((pinBitPos % 8) << 2) + 2));
 		}
 
-		if(PinConfig->GPIO_Mode == GPIO_MODE_INPUT_PU)
+		if(pinConfig->GPIO_Mode == GPIO_MODE_INPUT_PU)
 		{
 			/* Pull-up resistance activation */
-			GPIOx->ODR |= PinConfig->GPIO_PinNumber;
+			GPIOx->ODR |= pinConfig->GPIO_PinNumber;
 		}
 		else
 		{
 			/* Default value for pull-down if i/p mode is set */
-			GPIOx->ODR &= ~(PinConfig->GPIO_PinNumber);
+			GPIOx->ODR &= ~(pinConfig->GPIO_PinNumber);
 		}
 	}
 	else
@@ -282,7 +282,7 @@ void MCAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t PinNumber)
  * Param [in]        -PinNumber: specifies the port pin to lock it, set pin
  *                    number according @ref GPIO_PINS_define.
  *
- * Retval            -DONE if PinConfig is locked or ERROR if pin not locked
+ * Retval            -DONE if pinConfig is locked or ERROR if pin not locked
  *                    Return_t is defined at @ref GLOBAL_ENUM.
  *
  * Note              -During the LOCK Key Writing sequence, the value of
